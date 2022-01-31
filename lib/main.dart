@@ -1,11 +1,7 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-
-import './widgets/new_transactions.dart';
+import '../widgets/new_transactions.dart';
 import './models/transaction.dart';
 import './widgets/transaction_list.dart';
-import './widgets/chart.dart';
 
 void main() {
   runApp(MyApp());
@@ -25,9 +21,6 @@ class MyApp extends StatelessWidget {
             fontFamily: 'OpenSans',
             fontWeight: FontWeight.bold,
             fontSize: 18,
-            ),
-            button: TextStyle(
-            color: Colors.white
             ),
           ),
         appBarTheme: const AppBarTheme(
@@ -51,47 +44,31 @@ class myHomePage extends StatefulWidget{
 class _myHomePageState extends State<myHomePage> {
   @override
 final List<Transaction> _userTransactions =[
-     Transaction(
-      id: 't1',
-      title: 'New Shoes',
-      amount: 69.99,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Weekly Groceries',
-      amount: 16.53,
-      date: DateTime.now(),
-    ),
+    //  Transaction(
+    //   id: 't1',
+    //   title: 'New Shoes',
+    //   amount: 69.99,
+    //   date: DateTime.now(),
+    // ),
+    // Transaction(
+    //   id: 't2',
+    //   title: 'Weekly Groceries',
+    //   amount: 16.53,
+    //   date: DateTime.now(),
+    // ),
   ];
 
-  List<Transaction> get _recentTransactions{
-    return _userTransactions.where((tx) {
-      return tx.date.isAfter(
-        DateTime.now().subtract(
-          Duration(days: 7),
-        ),
-      );
-    } ).toList();
-  }
-
-  void _addNewTransaction(String txTitle , double txAmount, DateTime txDate){
+  void _addNewTransaction(String txTitle , double txAmount){
     final newTx = Transaction(   //creating new object to Transaction
       title: txTitle,
       amount: txAmount,
-      date: txDate,
+      date: DateTime.now(),
       id: DateTime.now().toString()
      );
 
      setState(() {
        _userTransactions.add(newTx);
      });
-  }
-
-  void _deletTransaction(String id){
-    setState(() {
-      _userTransactions.removeWhere((tx) => tx.id == id);
-    });
   }
 
   void _startAddNewTransaction(BuildContext ctx){
@@ -118,8 +95,13 @@ final List<Transaction> _userTransactions =[
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-        Chart(_recentTransactions),
-        TransactionList(_userTransactions,_deletTransaction),
+        Container(
+          width: double.infinity,
+          child: Card( 
+            color: Colors.blue,
+           elevation: 3,),
+        ),
+        TransactionList(_userTransactions),
       ],
       )
       ),
