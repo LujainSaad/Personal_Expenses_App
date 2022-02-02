@@ -1,4 +1,4 @@
-name: personal_experience
+name: personal_experience_app
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -45,7 +45,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - image/waiting.png
+    - image/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -66,7 +66,7 @@ flutter:
           weight: 700
     - family: Quicksand
       fonts:
-        - asset: fonts/Quicksand.ttf
+        - asset: fonts/Quicksand-Regular.ttf
         - asset: fonts/Quicksand-Bold.ttf
           weight: 700
 
