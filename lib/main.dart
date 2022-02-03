@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/cupertino.dart';
 
 import './widgets/new_transactions.dart';
 import './models/transaction.dart';
@@ -53,18 +54,18 @@ class myHomePage extends StatefulWidget{
 class _myHomePageState extends State<myHomePage> {
   @override
 final List<Transaction> _userTransactions =[
-     Transaction(
-      id: 't1',
-      title: 'New Shoes',
-      amount: 69.99,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Weekly Groceries',
-      amount: 16.53,
-      date: DateTime.now(),
-    ),
+    //  Transaction(
+    //   id: 't1',
+    //   title: 'New Shoes',
+    //   amount: 69.99,
+    //   date: DateTime.now(),
+    // ),
+    // Transaction(
+    //   id: 't2',
+    //   title: 'Weekly Groceries',
+    //   amount: 16.53,
+    //   date: DateTime.now(),
+    // ),
   ];
 
   List<Transaction> get _recentTransactions{
@@ -108,7 +109,16 @@ final List<Transaction> _userTransactions =[
   Widget build(BuildContext context) {
     final mediaQuery =MediaQuery.of(context);
       final isLandscape =mediaQuery.orientation == Orientation.landscape;
-    final appBar =AppBar(
+    final PreferredSizeWidget appBar = Platform.isIOS? CupertinoNavigationBar(
+      middle: Text('Personal Expenses'),
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children:<Widget>[
+        GestureDetector(
+          onTap: ()=> _startAddNewTransaction(context), 
+          child: Icon(CupertinoIcons.add))
+          ],),
+    ): AppBar(
         title: Text(
           'Personal Expenses',
         ),
@@ -117,19 +127,20 @@ final List<Transaction> _userTransactions =[
           onPressed: ()=> _startAddNewTransaction(context), 
           icon: Icon(Icons.add))
           ],
-      );
+      ) as PreferredSizeWidget;
       final txListWidget = Container(
           height: (mediaQuery.size.height - appBar.preferredSize.height - mediaQuery.padding.top) * 0.7,
           child: TransactionList(_userTransactions,_deletTransaction));
-    return Scaffold(
-      appBar: appBar,
-      body: SingleChildScrollView(
+
+      final pageBody = SafeArea(child: SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
          if (isLandscape) Row(mainAxisAlignment: MainAxisAlignment.center,
             children: [
-            Text('Show chart',),
+            Text('Show chart', 
+            style: Theme.of(context).textTheme.headline6,
+            ),
             Switch.adaptive(
               activeColor: Theme.of(context).accentColor,
               value:  _showChart, 
@@ -147,7 +158,14 @@ final List<Transaction> _userTransactions =[
           child: Chart(_recentTransactions))
           :txListWidget 
       ],)
-      ),
+      ),);
+    return Platform.isIOS? CupertinoPageScaffold(
+      child: pageBody, 
+      navigationBar: appBar as ObstructingPreferredSizeWidget
+      , ) 
+    : Scaffold(
+      appBar: appBar,
+      body: pageBody,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Platform.isIOS? Container(): FloatingActionButton(
           child: Icon(Icons.add),

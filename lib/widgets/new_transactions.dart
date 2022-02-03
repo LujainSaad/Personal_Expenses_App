@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'package:personal_experience_app/widgets/adaptive_buttons.dart';
+
 
 class NewTransactions extends StatefulWidget {
   final Function addTx;
@@ -79,14 +81,7 @@ class _NewTransactionsState extends State<NewTransactions> {
                             : 'Picked Date: ${DateFormat.yMd().format(_selectedDate!)}',
                       ),
                     ),
-                      TextButton(
-                       child: Text(
-                         'Choose Date',
-                         style: TextStyle(
-                           color: Theme.of(context).primaryColor),
-                         ),
-                       onPressed: _presentDatePicker,
-                     ),
+                      AdaptiveButtons(handler: (_presentDatePicker) , text: 'Choose date',),
                     ],),
                   ),
                   ElevatedButton(
